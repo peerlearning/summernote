@@ -2442,7 +2442,7 @@
           'ENTER': 'insertParagraph',
           'CTRL+Z': 'undo',
           'CTRL+Y': 'redo',
-          'TAB': 'tab',
+          // 'TAB': 'tab',
           'SHIFT+TAB': 'untab',
           'CTRL+B': 'bold',
           'CTRL+I': 'italic',
@@ -2455,6 +2455,7 @@
           'CTRL+SHIFT+J': 'justifyFull',
           'CTRL+SHIFT+NUM7': 'insertUnorderedList',
           'CTRL+SHIFT+NUM8': 'insertOrderedList',
+          'CTRL+SHIFT+NUM9': 'insertAlphabeticOrderedList',
           'CTRL+LEFTBRACKET': 'outdent',
           'CTRL+RIGHTBRACKET': 'indent',
           'CTRL+NUM0': 'formatPara',
@@ -2472,7 +2473,7 @@
           'ENTER': 'insertParagraph',
           'CMD+Z': 'undo',
           'CMD+SHIFT+Z': 'redo',
-          'TAB': 'tab',
+          // 'TAB': 'tab',
           'SHIFT+TAB': 'untab',
           'CMD+B': 'bold',
           'CMD+I': 'italic',
@@ -2485,6 +2486,7 @@
           'CMD+SHIFT+J': 'justifyFull',
           'CMD+SHIFT+NUM7': 'insertUnorderedList',
           'CMD+SHIFT+NUM8': 'insertOrderedList',
+          'CMD+SHIFT+NUM9': 'insertAlphabeticOrderedList',
           'CMD+LEFTBRACKET': 'outdent',
           'CMD+RIGHTBRACKET': 'indent',
           'CMD+NUM0': 'formatPara',
@@ -2565,7 +2567,8 @@
         },
         lists: {
           unordered: 'Unordered list',
-          ordered: 'Ordered list'
+          ordered: 'Ordered list',
+          alphabetic: 'Toggle list type',
         },
         options: {
           help: 'Help',
@@ -2684,7 +2687,7 @@
   var key = (function () {
     var keyMap = {
       'BACKSPACE': 8,
-      'TAB': 9,
+      // 'TAB': 9,
       'ENTER': 13,
       'SPACE': 32,
 
@@ -2698,6 +2701,7 @@
       'NUM6': 54,
       'NUM7': 55,
       'NUM8': 56,
+      'NUM9': 57,
 
       // Alphabet: a-z
       'B': 66,
@@ -2975,6 +2979,32 @@
      */
     this.insertOrderedList = function () {
       this.toggleList('OL');
+    };
+
+    /**
+     * toggle ordered list
+     * @type command
+     */
+    this.insertAlphabeticOrderedList = function () {
+      var listTypes = ['1', 'a', 'A', 'i', 'I'];
+      var self = this;
+      var rng = range.create().wrapBodyInlineWithPara();
+
+      var paras = rng.nodes(dom.isPara, { includeAncestor: true });
+      var bookmark = rng.paraBookmark(paras);
+
+      var diffLists = rng.nodes(dom.isList, {
+          includeAncestor: true
+        }).filter(function (listNode) {
+          return !$.nodeName(listNode, 'UL');
+        });
+
+        if (diffLists.length) {
+          $.each(diffLists, function (idx, listNode) {
+            $(listNode).attr('type', listTypes[Math.floor(Math.random() * listTypes.length)]);
+          });
+        }
+      range.createFromParaBookmark(bookmark, paras).select();
     };
 
     /**
@@ -3656,6 +3686,14 @@
       afterCommand($editable);
     };
 
+     /**
+      * @param {jQuery} $editable
+      */
+    this.insertAlphabeticOrderedList = function ($editable) {
+      bullet.insertAlphabeticOrderedList($editable);
+      afterCommand($editable);
+    };
+
     /**
      * @param {jQuery} $editable
      */
@@ -4232,6 +4270,9 @@
       });
       btnState('button[data-event="insertOrderedList"]', function () {
         return styleInfo['list-style'] === 'ordered';
+      });
+      btnState('button[data-event="insertAlphabeticOrderedList"]', function () {
+        return styleInfo['list-style'] === 'alpha-ordered';
       });
     };
 
@@ -5973,6 +6014,12 @@
           title: lang.lists.ordered
         });
       },
+      ola: function (lang, options) {
+        return tplIconButton(options.iconPrefix +  'list-alt', {
+          event: 'insertAlphabeticOrderedList',
+          title: lang.lists.alphabetic
+        });
+      },
       paragraph: function (lang, options) {
         var leftButton = tplIconButton(options.iconPrefix + 'align-left', {
           title: lang.paragraph.left,
@@ -6247,7 +6294,8 @@
         { kbd: '⌘ + ⇧ + R', text: lang.paragraph.right },
         { kbd: '⌘ + ⇧ + J', text: lang.paragraph.justify },
         { kbd: '⌘ + ⇧ + NUM7', text: lang.lists.ordered },
-        { kbd: '⌘ + ⇧ + NUM8', text: lang.lists.unordered }
+        { kbd: '⌘ + ⇧ + NUM8', text: lang.lists.unordered },
+        { kbd: '⌘ + ⇧ + NUM9', text:lang.lists.alphabetic}
       ];
 
       return tplShortcut(lang.shortcut.paragraphFormatting, keys);
