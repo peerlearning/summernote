@@ -1,5 +1,5 @@
 {
-  "name": "summernote",
+  "name": "summernote-avanti",
   "main": [
     "./dist/summernote.js",
     "./dist/summernote.css"
@@ -15,5 +15,17 @@
     "jquery": ">= 1.9.0",
     "bootstrap": ">= 3.0.1",
     "font-awesome": ">=4.2.0"
-  }
+  },
+  "version": "0.6.9",
+  "homepage": "https://github.com/yaxhpal/summernote",
+  "authors": [
+    "Yashpal Meena <yaxhpal@gmail.com>"
+  ],
+  "description": "Summernote Editor for Avanti Content Management System",
+  "keywords": [
+    "Summernote",
+    "Bootstrap",
+    "Avanti"
+  ],
+  "license": "MIT"
 }
