@@ -2440,8 +2440,8 @@
       keyMap: {
         pc: {
           'ENTER': 'insertParagraph',
-          'CTRL+Z': 'undo',
-          'CTRL+Y': 'redo',
+          // 'CTRL+Z': 'undo',
+          // 'CTRL+Y': 'redo',
           // 'TAB': 'tab',
           'SHIFT+TAB': 'untab',
           'CTRL+B': 'bold',
