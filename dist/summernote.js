@@ -2471,8 +2471,8 @@
 
         mac: {
           'ENTER': 'insertParagraph',
-          'CMD+Z': 'undo',
-          'CMD+SHIFT+Z': 'redo',
+          // 'CMD+Z': 'undo',
+          // 'CMD+SHIFT+Z': 'redo',
           // 'TAB': 'tab',
           'SHIFT+TAB': 'untab',
           'CMD+B': 'bold',
