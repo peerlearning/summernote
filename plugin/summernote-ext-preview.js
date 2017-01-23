@@ -45,7 +45,7 @@
           $('#' + problemTextPreview).parent().toggleClass("hide-element unhide-element col-xs-6");
           $('#' + problemTextPreview).parent().prev().toggleClass("col-xs-6 col-xs-12");
         } else {
-          $('#problem-text-preview').toggle()
+          $editable.parent().parent().parent().parent().siblings('.wysiwygp').toggle()
         }
       },
     }
