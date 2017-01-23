@@ -40,9 +40,13 @@
     events: { // events
       preview: function (event, editor, layoutInfo) {
         var $editable = layoutInfo.editable();
-         $('#'+$editable.parent().parent().parent().attr('preview-target')).parent().toggleClass("hide-element unhide-element");
-         $('#'+$editable.parent().parent().parent().attr('preview-target')).parent().toggleClass("col-xs-6");
-         $('#'+$editable.parent().parent().parent().attr('preview-target')).parent().prev().toggleClass("col-xs-6 col-xs-12");
+        var problemTextPreview = $editable.parent().parent().parent().attr('preview-target')
+        if ($editable.parent().parent().parent().attr('preview-mode') == 'side-impose') {
+          $('#' + problemTextPreview).parent().toggleClass("hide-element unhide-element col-xs-6");
+          $('#' + problemTextPreview).parent().prev().toggleClass("col-xs-6 col-xs-12");
+        } else {
+          $('#problem-text-preview').toggle()
+        }
       },
     }
   });
